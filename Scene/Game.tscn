@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://crgn3117blgd3" path="res://Map/World_1.tscn" id="1_7lr0t"]
 [ext_resource type="PackedScene" uid="uid://ctvwhuaw7cf12" path="res://Character/Player/player_body_2d.tscn" id="2_tqtfs"]
 [ext_resource type="PackedScene" uid="uid://ujpdonceu8hc" path="res://Character/Enemy/Snail/snail_body_2d.tscn" id="4_hdtt8"]
-[ext_resource type="PackedScene" uid="uid://bsvg8ebbwxkdw" path="res://Character/Player/NightBorne_body_2d.tscn" id="5_w66ak"]
+[ext_resource type="PackedScene" uid="uid://bsvg8ebbwxkdw" path="res://Character/Enemy/NightBorne/NightBorne_body_2d.tscn" id="5_w66ak"]
 [ext_resource type="PackedScene" uid="uid://dtt62w2oonq1r" path="res://Items/Coin/coin_2d.tscn" id="6_6n35d"]
 [ext_resource type="PackedScene" uid="uid://68w8137vwaor" path="res://Path/Enemy/Ground/Path_enemy_ground.tscn" id="6_bflud"]
 

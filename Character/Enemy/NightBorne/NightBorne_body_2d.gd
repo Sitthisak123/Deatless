@@ -93,8 +93,12 @@ func _physics_process(delta):
 		
 		if $RayCast2D_Attack_Dectector.is_colliding() and animeStates == ANIME_STATE.alert:
 			var collider_Obj = $RayCast2D_Attack_Dectector.get_collider()
-			if(collider_Obj):
+			if("player" in collider_Obj.get_groups()):
+				print("has Player > Attack")				
 				animeStates = ANIME_STATE.attacking
+		elif(not $RayCast2D_Attack_Dectector.is_colliding() and animeStates == ANIME_STATE.attacking):				
+				print("no Player > Aleret")
+				animeStates = ANIME_STATE.alert
 			
 		if $RayCast2D_Detector.is_colliding():
 			var collided_object = $RayCast2D_Detector.get_collider()

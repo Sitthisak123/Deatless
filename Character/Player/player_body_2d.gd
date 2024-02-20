@@ -28,7 +28,7 @@ var ATK = get_meta("ATK") if get_meta("ATK") else 10.0
 signal on_player_takeDamage(atk)
 
 func _ready():
-	$Control/ProgressBar.set_value_no_signal(HP/maxHP*100.0)
+	$Control/MarginContainer/ProgressBar.set_value_no_signal(HP/maxHP*100.0)
 	
 
 func _physics_process(delta):
@@ -143,7 +143,7 @@ func _on_attack_area_body_entered(body):
 
 func _on_on_player_take_damage(enemy_atk):
 	HP -= enemy_atk
-	$Control/ProgressBar.set_value(HP/maxHP*100.0)
+	$Control/MarginContainer/ProgressBar.set_value(HP/maxHP*100.0)
 	print(enemy_atk)
 	
 func player_attacked(enemy_Node, player_atk):
