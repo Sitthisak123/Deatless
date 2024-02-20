@@ -4,18 +4,38 @@
 
 [sub_resource type="GDScript" id="GDScript_6spvm"]
 script/source = "extends CharacterBody2D
-const JUMP_VELOCITY = -400.0
+
+const JUMP_VELOCITY = -200.0  # Adjusted for better bounce height
+var coinRolling = true
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting(\"physics/2d/default_gravity\")
+func _ready():
+	$bounce_timer.start()
 
 
 func _physics_process(delta):
-	if not is_on_floor():
+	#print(coinRolling, $bounce_timer.time_left)
+	if coinRolling:
+		velocity.y = JUMP_VELOCITY
+	if not is_on_floor() and not coinRolling:
 		velocity.y += gravity * delta
-
+		$Area2D/CollisionShape2D.disabled = false
+		
 
 	move_and_slide()
+
+
+func _on_area_2d_body_entered(body):
+	if \"player\" in body.get_groups():
+		body.on_player_getCoin.emit()
+		queue_free()
+	pass
+
+
+func _on_bounce_timer_timeout():
+	coinRolling = false
+	# Optional: Play a sound effect or animation to indicate the end of the bounce
 "
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8cv12"]
@@ -129,3 +149,17 @@ metadata/_aseprite_wizard_config_ = {
 "slice": "",
 "source": "res://_assets/Items/Coin/Coin.aseprite"
 }
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_8cv12")
+disabled = true
+
+[node name="bounce_timer" type="Timer" parent="."]
+process_callback = 0
+wait_time = 0.25
+one_shot = true
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="timeout" from="bounce_timer" to="." method="_on_bounce_timer_timeout"]

@@ -498,5 +498,5 @@ light_mask = 99
 visibility_layer = 99
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
-position = Vector2(360, -82)
+position = Vector2(392, 39)
 shape = SubResource("RectangleShape2D_vxs16")

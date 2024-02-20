@@ -21,8 +21,8 @@ enum ANIME_STATE {
 var animeStates = null
 var animePrevStates = null
 var playerDetected = false
-var maxHP = get_meta("maxHP") if get_meta("maxHP") else 40.0
-var HP = get_meta("HP") if get_meta("HP") else 40.0
+var maxHP = get_meta("maxHP") if get_meta("maxHP") else 80.0
+var HP = get_meta("HP") if get_meta("HP") else 1.0
 var atk = 10
 var canAttack = true
 
@@ -76,7 +76,7 @@ func _physics_process(delta):
 				$AnimatedSprite2D.play("Attack")
 				$AnimationPlayer.play("Attack")	
 				
-		if  not $RayCast2D.is_colliding():
+		if  not $RayCast2D.is_colliding() and is_on_floor():
 			if direction == Vector2.LEFT:
 				direction = Vector2.RIGHT  
 			else:
@@ -84,7 +84,7 @@ func _physics_process(delta):
 			$RayCast2D.scale.x *= -1
 			$RayCast2D_Detector.scale.x *= -1
 			$RayCast2D_Attack_Dectector.scale.x *= -1
-			$Attack_Area/CollisionPolygon2D.scale.x *= -1
+			
 		if (animeStates == ANIME_STATE.alert):
 			if not isActive_timer($Heading_to_target_Delay):
 				$Heading_to_target_Delay.start()
@@ -124,8 +124,9 @@ func _physics_process(delta):
 		$ProgressBar.visible = false
 		$AnimatedSprite2D_Alert_sign.visible = false
 		animeStates = ANIME_STATE.dead
+		$CollisionShape2D.disabled = true
 		$AnimatedSprite2D.play("Dead")
-		
+
 
 func _on_alert_timeout_delay_timeout():
 	animeStates = ANIME_STATE.walk
@@ -157,6 +158,7 @@ func _on_heading_to_target_delay_timeout():
 			$RayCast2D_Detector.scale.x *= -1
 			$RayCast2D_Attack_Dectector.scale.x *= -1
 			$Attack_Area/CollisionPolygon2D.scale.x *= -1
+			
 
 
 func _on_on_enemy_take_dammage(player_atk):
@@ -168,6 +170,7 @@ func _on_on_enemy_take_dammage(player_atk):
 
 func _on_animated_sprite_2d_animation_finished():
 	if(animeStates == ANIME_STATE.dead):
+		get_parent().on_dead.emit(get_groups(), global_position)
 		queue_free()
 	if(animeStates == ANIME_STATE.attacking):
 		animeStates = ANIME_STATE.alert
@@ -180,7 +183,10 @@ func _on_hit_stun_timeout():
 
 func _on_attack_countdown_timeout():
 	canAttack = true
+	
 
 func _on_attack_area_body_entered(body):
+	print(body.name, " ",body.get_groups())
 	if("player" in body.get_groups()):
 		body.on_player_takeDamage.emit(atk)
+		

@@ -1,4 +1,4 @@
-[gd_scene load_steps=73 format=3 uid="uid://bsvg8ebbwxkdw"]
+[gd_scene load_steps=73 format=3 uid="uid://chq3q0qoikgjb"]
 
 [ext_resource type="Script" path="res://Character/Enemy/NightBorne/NightBorne_body_2d.gd" id="1_n8qsj"]
 [ext_resource type="Texture2D" uid="uid://caqvxhgj3a5wf" path="res://Character/Enemy/Boar/Layer 1.png" id="2_7oqhp"]
@@ -504,7 +504,7 @@ tracks/0/path = NodePath("AnimatedSprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.0909, 0.1818, 0.2727, 0.3636, 0.4545, 0.5455, 0.6364, 0.7273, 0.8181, 0.909, 0.9999),
+"times": PackedFloat32Array(0, 0.0909, 0.1818, 0.2727, 0.3636, 0.4545, 0.5455, 0.6364, 0.7273, 0.8181, 0.882, 0.983),
 "transitions": PackedFloat32Array(1, 1.07177, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
@@ -516,10 +516,10 @@ tracks/1/path = NodePath("Attack_Area/CollisionPolygon2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.8181),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0.004, 0.82),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(-24, 21)]
+"values": [Vector2(0, 0), Vector2(0, 0)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -528,10 +528,10 @@ tracks/2/path = NodePath("Attack_Area/CollisionPolygon2D:polygon")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.8181, 0.909),
+"times": PackedFloat32Array(0, 0.82, 0.885),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [PackedVector2Array(), PackedVector2Array(4.015, -111.964, -60.225, -68.4222, -58.2175, -9.3303, -6.0225, 20.2157, 56.21, 20.2157, 100.375, -4.66515, 74.2775, -34.2111, 28.105, -31.101, 16.06, -51.3167, 92.345, -110.409), PackedVector2Array()]
+"values": [PackedVector2Array(), PackedVector2Array(52.195, -74.6424, 22.0825, -82.4177, -32.12, -77.7525, -104.39, -43.5414, -112.42, 4.66515, -98.3675, 34.2111, -48.18, 55.9818, 8.03, 51.3167, 12.045, 18.6606, -18.0675, 12.4404, -42.1575, 3.1101, -50.1875, -31.101, -32.12, -55.9818), PackedVector2Array()]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -540,7 +540,7 @@ tracks/3/path = NodePath("Attack_Area/CollisionPolygon2D:disabled")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.8181, 0.909),
+"times": PackedFloat32Array(0, 0.8181, 0.886),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [true, false, true]
@@ -576,10 +576,9 @@ metadata/_aseprite_wizard_config_ = {
 position = Vector2(1, -8)
 scale = Vector2(1.3625, 1.3625)
 sprite_frames = SubResource("SpriteFrames_u7act")
-animation = &"Dead"
+animation = &"Attack"
 autoplay = "Idle"
-frame = 22
-frame_progress = 1.0
+frame = 11
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 7.5)
@@ -610,11 +609,11 @@ wait_time = 0.298
 
 [node name="Hit_stun" type="Timer" parent="."]
 process_callback = 0
-wait_time = 0.5
+wait_time = 0.249
 one_shot = true
 
 [node name="Attack_countdown" type="Timer" parent="."]
-wait_time = 4.0
+wait_time = 0.001
 one_shot = true
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
@@ -632,9 +631,7 @@ show_percentage = false
 [node name="Attack_Area" type="Area2D" parent="."]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Attack_Area"]
-position = Vector2(-24, 21)
 scale = Vector2(0.498132, 0.643066)
-disabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

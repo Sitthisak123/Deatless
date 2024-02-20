@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3 uid="uid://ctvwhuaw7cf12"]
+[gd_scene load_steps=62 format=3 uid="uid://ctvwhuaw7cf12"]
 
 [ext_resource type="Texture2D" uid="uid://csgbdw5a2nawd" path="res://_assets/Character/Attack-01/Attack-01-Sheet.png" id="1_dhmmh"]
 [ext_resource type="Script" path="res://Character/Player/player_body_2d.gd" id="1_nd35u"]
@@ -6,22 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://2ops52dc8q1" path="res://_assets/Character/Idle/Idle-Sheet.png" id="3_r1qhk"]
 [ext_resource type="Texture2D" uid="uid://bke6nn2mwgknl" path="res://_assets/Character/Jumlp-All/Jump-All-Sheet.png" id="4_p1tky"]
 [ext_resource type="Texture2D" uid="uid://bjk1rruerqwyi" path="res://_assets/Character/Run/Run-Sheet.png" id="5_nx0vw"]
-
-[sub_resource type="Theme" id="Theme_xg45r"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2oypk"]
-bg_color = Color(0.6, 0.6, 0.6, 0.333333)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.745098, 0, 0.184314, 1)
-
-[sub_resource type="CanvasTexture" id="CanvasTexture_shn04"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_leeqy"]
-texture = SubResource("CanvasTexture_shn04")
-modulate_color = Color(0.784314, 0.239216, 0.227451, 1)
+[ext_resource type="Texture2D" uid="uid://trwxwx8r8x63" path="res://Coin.png" id="7_hbjqn"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3sb26"]
 atlas = ExtResource("1_dhmmh")
@@ -87,13 +72,17 @@ region = Rect2(486, 0, 68, 55)
 atlas = ExtResource("2_bkonn")
 region = Rect2(567, 0, 68, 55)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_b1rf7"]
-atlas = ExtResource("3_r1qhk")
-region = Rect2(0, 11, 64, 58)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_r1dx4"]
 atlas = ExtResource("3_r1qhk")
 region = Rect2(64, 11, 64, 58)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7lsvh"]
+atlas = ExtResource("4_p1tky")
+region = Rect2(770, 0, 55, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b1rf7"]
+atlas = ExtResource("3_r1qhk")
+region = Rect2(0, 11, 64, 58)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7jq44"]
 atlas = ExtResource("3_r1qhk")
@@ -150,10 +139,6 @@ region = Rect2(642, 0, 55, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_lq2jh"]
 atlas = ExtResource("4_p1tky")
 region = Rect2(706, 0, 55, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_7lsvh"]
-atlas = ExtResource("4_p1tky")
-region = Rect2(770, 0, 55, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5im6w"]
 atlas = ExtResource("4_p1tky")
@@ -271,6 +256,20 @@ animations = [{
 "loop": false,
 "name": &"Player - Dead",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r1dx4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7lsvh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7lsvh")
+}],
+"loop": false,
+"name": &"Player - Hit",
+"speed": 15.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -426,14 +425,119 @@ tracks/3/keys = {
 "values": [PackedVector2Array(5971.1, 1334.91, 5971.1, 671.449, 5307.65, 671.449, 5307.65, 1334.91), PackedVector2Array(-16, -24, -16, -16, 0, -8, 0, 16, -13.0008, 11.5012, -16, 16, -8, 24, 16, 24, 28.8, 16, 40, 0, 40, -16, 32, -32, 0, -32), PackedVector2Array(), PackedVector2Array(-16, -24, -16, -16, 0, -8, 0, 11.1572, -16, 3.41684, -40, 27.4168, -16, 48, 16, 48, 32, 32, 40, 24, 40, 0, 40, -16, 32, -32, 0, -32), PackedVector2Array(), PackedVector2Array(5971.1, 1334.91, 5971.1, 671.449, 5307.65, 671.449, 5307.65, 1334.91)]
 }
 
+[sub_resource type="Shader" id="Shader_2r7mt"]
+code = "shader_type canvas_item;
+uniform float hit_opacity = 0;
+void vertex() {
+	// Called for every vertex the material is visible on.
+}
+
+void fragment() {
+	// Called for every pixel the material is visible on.
+	COLOR.rgb = texture(TEXTURE, UV).rgb * (1.0 * hit_opacity) + vec3(1,1,1) * hit_opacity;
+	COLOR.a = texture(TEXTURE, UV).a;
+}
+
+//void light() {
+	// Called for every pixel for every light affecting the CanvasItem.
+	// Uncomment to replace the default light processing function with this one.
+//}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lnfsy"]
+resource_local_to_scene = true
+shader = SubResource("Shader_2r7mt")
+shader_parameter/hit_opacity = 1.0
+
+[sub_resource type="Animation" id="Animation_8u3sg"]
+resource_name = "Hit - 01"
+length = 0.21
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:material")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.15),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [SubResource("ShaderMaterial_lnfsy"), SubResource("ShaderMaterial_lnfsy"), null]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.15),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 2]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_nfhb0"]
 _data = {
-"Attack - 01": SubResource("Animation_2iuwj")
+"Attack - 01": SubResource("Animation_2iuwj"),
+"Hit - 01": SubResource("Animation_8u3sg")
 }
+
+[sub_resource type="Theme" id="Theme_xg45r"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2oypk"]
+bg_color = Color(0.6, 0.6, 0.6, 0.333333)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.745098, 0, 0.184314, 1)
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_shn04"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_leeqy"]
+texture = SubResource("CanvasTexture_shn04")
+modulate_color = Color(0.784314, 0.239216, 0.227451, 1)
 
 [node name="PlayerBody2D" type="CharacterBody2D" groups=["player"]]
 z_index = 2
 script = ExtResource("1_nd35u")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -1.20371e-35)
+scale = Vector2(0.916667, 0.925)
+sprite_frames = SubResource("SpriteFrames_b8iyx")
+animation = &"Player - Attack_Light All"
+metadata/_aseprite_wizard_config_ = {
+"layer": "Layer 2",
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"op_exp": true,
+"slice": "",
+"source": "res://_assets/Character/Attack-01/Attack-01.aseprite"
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_ohall")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+rotation_smoothing_speed = 500.0
+drag_horizontal_offset = 0.76
+
+[node name="Attack_Area" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Attack_Area"]
+build_mode = 1
+polygon = PackedVector2Array(5971.1, 1334.91, 5971.1, 671.449, 5307.65, 671.449, 5307.65, 1334.91)
+disabled = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_nfhb0")
+}
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -460,44 +564,45 @@ theme_override_styles/background = SubResource("StyleBoxFlat_2oypk")
 theme_override_styles/fill = SubResource("StyleBoxTexture_leeqy")
 value = 100.0
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -2.01948e-28)
-scale = Vector2(0.916667, 0.925)
-sprite_frames = SubResource("SpriteFrames_b8iyx")
-animation = &"Player - Dead"
-frame = 7
-frame_progress = 1.0
-metadata/_aseprite_wizard_config_ = {
-"layer": "Layer 2",
-"o_ex_p": "",
-"o_folder": "",
-"o_name": "",
-"only_visible": false,
-"op_exp": false,
-"slice": "",
-"source": "res://_assets/Character/Attack-01/Attack-01.aseprite"
-}
+[node name="MarginContainer2" type="MarginContainer" parent="Control"]
+layout_direction = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -352.0
+offset_top = -208.0
+offset_right = -144.0
+offset_bottom = -183.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CapsuleShape2D_ohall")
+[node name="Sprite2D" type="Sprite2D" parent="Control/MarginContainer2"]
+position = Vector2(10, 13)
+scale = Vector2(0.55, 0.55)
+texture = ExtResource("7_hbjqn")
+region_enabled = true
+region_rect = Rect2(1, 1, 30, 30)
+region_filter_clip_enabled = true
 
-[node name="Camera2D" type="Camera2D" parent="."]
-rotation_smoothing_speed = 500.0
-drag_horizontal_offset = 0.76
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/MarginContainer2/Sprite2D"]
+offset_left = 15.545
+offset_top = -10.545
+offset_right = 35.545
+offset_bottom = 14.455
+text = " x"
+tab_size = 1
 
-[node name="Attack_Area" type="Area2D" parent="."]
+[node name="RichTextLabel_CoinAmount" type="RichTextLabel" parent="Control/MarginContainer2/Sprite2D"]
+offset_left = 40.0
+offset_top = -10.545
+offset_right = 190.0
+offset_bottom = 14.455
+text = "0"
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Attack_Area"]
-position = Vector2(0, -8)
-build_mode = 1
-polygon = PackedVector2Array(5971.1, 1334.91, 5971.1, 671.449, 5307.65, 671.449, 5307.65, 1334.91)
-disabled = true
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_nfhb0")
-}
-
+[connection signal="on_player_getCoin" from="." to="." method="_on_on_player_get_coin"]
 [connection signal="on_player_takeDamage" from="." to="." method="_on_on_player_take_damage"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="frame_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_frame_changed"]
