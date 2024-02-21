@@ -553,7 +553,7 @@ _data = {
 
 [node name="NightBorneBody2D" type="CharacterBody2D" groups=["enemy"]]
 script = ExtResource("1_n8qsj")
-metadata/init_animeState = "walk"
+metadata/init_animeState = "alert"
 
 [node name="AnimatedSprite2D_Alert_sign" type="AnimatedSprite2D" parent="."]
 visible = false

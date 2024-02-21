@@ -11,18 +11,18 @@ var direction = Vector2.LEFT
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 enum ANIME_STATE {
 	idle,
-	alert,
 	walk,
+	alert,
 	hit,
 	newHit,
 	dead,
 	attacking
 }
-var animeStates = null
+@export var animeStates = 1
 var animePrevStates = null
 var playerDetected = false
 var maxHP = get_meta("maxHP") if get_meta("maxHP") else 80.0
-var HP = get_meta("HP") if get_meta("HP") else 1.0
+@export var HP = 1.0
 var atk = 10
 var canAttack = true
 
@@ -30,7 +30,7 @@ var canAttack = true
 signal on_enemy_TakeDammage(player_atk)
 
 func _ready():
-	animeStates = ANIME_STATE[get_meta("init_animeState")]
+	HP = get_meta("HP") if get_meta("HP") else 100.0
 	$ProgressBar.set_value_no_signal(HP/maxHP*100.0)
 	
 func _physics_process(delta):

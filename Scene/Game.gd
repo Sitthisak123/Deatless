@@ -11,11 +11,11 @@ func _process(delta):
 	if not count_enemy_group:
 		for i in range(3):  # Create 3 unique instances
 			var enemy_instance = NightBorneBody2D.instantiate()  # Instantiate a new instance each time
-			
 			var rand_pos_x = randi_range(-400, 650)
 			while abs(rand_pos_x - $PlayerBody2D.global_position.x) < 20:
 				rand_pos_x = randi_range(-400, 650)
 			enemy_instance.set_position(Vector2(rand_pos_x, -100))
+			enemy_instance.animeStates = 2
 			add_child(enemy_instance)
 
 	#print(count_enemy_group)
@@ -23,7 +23,6 @@ func _process(delta):
 
 func _on_on_dead(groups: Array, pos):
 	if(groups):
-		print("coin >>>>>>>>>>>>>")
 		if("enemy" in groups):
 			var Coin2D_ins = Coin2D.instantiate()
 			Coin2D_ins.set_position(pos)

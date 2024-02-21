@@ -27,13 +27,14 @@ ANIME_STATE.hit,
 var origin_gravity = gravity
 
 var maxHP = get_meta("maxHP") if get_meta("maxHP") else 100.0
-var HP = get_meta("HP") if get_meta("HP") else 100.0
+@export var HP = 100.0
 var ATK = get_meta("ATK") if get_meta("ATK") else 10.0
 var COIN = 0
 
 signal on_player_takeDamage(atk)
 signal on_player_getCoin
 func _ready():
+	HP = get_meta("HP") if get_meta("HP") else 100.0
 	$Control/MarginContainer/ProgressBar.set_value_no_signal(HP/maxHP*100.0)
 	
 
@@ -54,6 +55,7 @@ func _physics_process(delta):
 			velocity.y = JUMP_VELOCITY
 			playerPrevState = playerState
 			playerState = ANIME_STATE.jumping
+			$Attack_Area/CollisionPolygon2D.disabled = true
 			$AnimatedSprite2D.play("Player - Jump all")
 			if($AnimationPlayer.is_playing()):
 				$AnimationPlayer.stop()
@@ -138,6 +140,8 @@ func _on_animated_sprite_2d_animation_finished():
 	elif(playerState == ANIME_STATE.dead):
 		print("Games Over !!!!")
 		$AnimatedSprite2D.pause()
+		var GameOverMenu_ins = preload("res://Scene/GameIsOver.tscn").instantiate()
+		get_parent().add_child(GameOverMenu_ins)
 	pass
 	
 

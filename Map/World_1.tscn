@@ -1,6 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://crgn3117blgd3"]
+[gd_scene load_steps=8 format=3 uid="uid://crgn3117blgd3"]
 
 [ext_resource type="Texture2D" uid="uid://btq8g0156018c" path="res://_assets/Tiles/Tiles.png" id="1_3v5pf"]
+[ext_resource type="Script" path="res://Map/World_1.gd" id="1_w5l43"]
+[ext_resource type="PackedScene" uid="uid://6xermrexhcen" path="res://Path/Path_Follow/Moving_platfrom_2d.tscn" id="3_lcsxg"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wr4m2"]
 texture = ExtResource("1_3v5pf")
@@ -475,10 +477,11 @@ sources/0 = SubResource("TileSetAtlasSource_wr4m2")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kibv3"]
 size = Vector2(1226, 65)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_vxs16"]
-size = Vector2(554, 16)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ynrc5"]
+size = Vector2(3821, 162)
 
 [node name="Node2D" type="Node2D"]
+script = ExtResource("1_w5l43")
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_oo7yl")
@@ -493,10 +496,34 @@ collision_mask = 51
 position = Vector2(118, 33)
 shape = SubResource("RectangleShape2D_kibv3")
 
-[node name="StaticBody2D2" type="StaticBody2D" parent="."]
-light_mask = 99
-visibility_layer = 99
+[node name="MovingPlatfrom2d" parent="." instance=ExtResource("3_lcsxg")]
+position = Vector2(763, 14)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
-position = Vector2(392, 39)
-shape = SubResource("RectangleShape2D_vxs16")
+[node name="MovingPlatfrom2d2" parent="." instance=ExtResource("3_lcsxg")]
+position = Vector2(-528, 14)
+
+[node name="WorldFallOut" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldFallOut"]
+position = Vector2(1, 459)
+shape = SubResource("RectangleShape2D_ynrc5")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -57.0
+offset_top = -124.0
+offset_right = 243.0
+offset_bottom = -101.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+text = "Sitthisak  Theparsa  66122420321"
+fit_content = true
+text_direction = 1
+
+[connection signal="body_entered" from="WorldFallOut" to="." method="_on_world_fall_out_body_entered"]

@@ -509,6 +509,7 @@ position = Vector2(0, -1.20371e-35)
 scale = Vector2(0.916667, 0.925)
 sprite_frames = SubResource("SpriteFrames_b8iyx")
 animation = &"Player - Attack_Light All"
+frame = 7
 metadata/_aseprite_wizard_config_ = {
 "layer": "Layer 2",
 "o_ex_p": "",
@@ -530,6 +531,7 @@ drag_horizontal_offset = 0.76
 [node name="Attack_Area" type="Area2D" parent="."]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Attack_Area"]
+position = Vector2(0, -8)
 build_mode = 1
 polygon = PackedVector2Array(5971.1, 1334.91, 5971.1, 671.449, 5307.65, 671.449, 5307.65, 1334.91)
 disabled = true
